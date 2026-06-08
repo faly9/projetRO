@@ -1,124 +1,128 @@
 import React from 'react'
+import './Home.css'
 
 export default function Home() {
+
+  const cards = [
+  { num: '01', icon: 'ti-list-details',  bg: '#E6F1FB', color: '#185FA5', title: 'Définir les tâches',    text: 'Créez vos tâches, durées et dépendances ou importez-les depuis Excel et CSV.' },
+  { num: '02', icon: 'ti-calculator',    bg: '#E1F5EE', color: '#0F6E56', title: 'Calcul automatique',   text: 'Calcul instantané des dates au plus tôt, au plus tard et des marges.' },
+  { num: '03', icon: 'ti-route',         bg: '#FCEBEB', color: '#A32D2D', title: 'Chemin critique',      text: 'Identification automatique des tâches critiques impactant le délai global.' },
+  { num: '04', icon: 'ti-file-export',   bg: '#FAEEDA', color: '#854F0B', title: 'Exportation',          text: 'Exportez vos résultats en Excel, CSV, JSON ou image PNG.' },
+]
+
   return (
-    <div className="page">
-      <div className="container">
-        <h1>Calculateur de Graphe MPM</h1>
-        <p style={{ fontSize: '16px', marginBottom: '32px', maxWidth: '600px' }}>
-          Bienvenue sur le calculateur professionnel de graphe MPM (Méthode des Potentiels Metra). 
-          Un outil puissant pour la planification de projet, l'analyse du chemin critique et la gestion des ressources.
+    <div className="home-page">
+      <div className="hero-section">
+
+        <h1 className="hero-title">
+          Planifiez vos projets avec
+          <span> précision et efficacité</span>
+        </h1>
+
+        <p className="hero-description">
+          Créez, analysez et optimisez vos graphes MPM grâce à une interface
+          moderne permettant d'identifier les chemins critiques, les marges
+          et les dépendances entre tâches.
         </p>
+      </div>
 
-        <div className="feature-grid">
-          <div className="feature-card">
-            <h3>Définir les tâches</h3>
-            <p>
-              Saisissez les tâches de votre projet avec leurs durées et interdépendances. 
-              Utilisez la saisie manuelle ou importez-les directement depuis des fichiers CSV/Excel en un clic.
-            </p>
+<div className="feature-grid">
+  {cards.map(c => (
+    <div className="feature-card" key={c.num}>
+      <div className='icone-grid'>
+      <p className="feature-card-num">{c.num}</p>
+      <div className="feature-icon" style={{ background: c.bg, color: c.color }}>
+        <i className={`ti ${c.icon}`} aria-hidden="true" />
+      </div>
+      </div>
+      <h3>{c.title}</h3>
+      <p>{c.text}</p>
+    </div>
+  ))}
+</div>
+      <div className="content-grid">
+
+        <section className="glass-card">
+          <h2>
+            <i className="ti ti-rocket"></i>
+            Démarrage rapide
+          </h2>
+
+          <div className="steps">
+            <div className="step">
+              <span>1</span>
+              <div>
+                <strong>Accéder au calculateur</strong>
+                <p>Sélectionnez "Calculateur MPM" dans la navigation.</p>
+              </div>
+            </div>
+
+            <div className="step">
+              <span>2</span>
+              <div>
+                <strong>Ajouter les tâches</strong>
+                <p>Renseignez les durées et les dépendances.</p>
+              </div>
+            </div>
+
+            <div className="step">
+              <span>3</span>
+              <div>
+                <strong>Calculer</strong>
+                <p>Lancez automatiquement l'analyse MPM.</p>
+              </div>
+            </div>
+
+            <div className="step">
+              <span>4</span>
+              <div>
+                <strong>Analyser</strong>
+                <p>Consultez les chemins critiques et les statistiques.</p>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <div className="feature-card">
-            <h3>Calculer le calendrier</h3>
-            <p>
-              Le moteur calcule automatiquement les dates au plus tôt et au plus tard, les marges totales 
-              et identifie instantanément tous les chemins critiques.
-            </p>
-          </div>
+        <section className="glass-card">
+          <h2>
+            <i className="ti ti-bulb"></i>
+            Pourquoi utiliser MPM ?
+          </h2>
 
-          <div className="feature-card">
-            <h3>Visualiser les résultats</h3>
-            <p>
-              Analysez les résultats détaillés à l'aide de tableaux interactifs, de statistiques et 
-              d'une visualisation graphique du réseau avec surlignage en temps réel.
-            </p>
-          </div>
-
-          <div className="feature-card">
-            <h3>Exporter & Partager</h3>
-            <p>
-              Exportez vos résultats aux formats Json, CSV, Excel ou PNG. Enregistrez vos calculs 
-              localement pour y accéder à tout moment depuis l'historique.
-            </p>
-          </div>
-        </div>
-
-        <div className="section">
-          <div className="section-title">Guide de démarrage rapide</div>
-          <ol className="step-list">
-            <li>
-              <span>
-                <strong>Accéder au calculateur MPM</strong>
-                <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', margin: '0' }}>
-                  Cliquez sur le bouton "Calculateur MPM" dans la barre latérale
-                </p>
-              </span>
-            </li>
-            <li>
-              <span>
-                <strong>Saisir vos tâches</strong>
-                <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', margin: '0' }}>
-                  Ajoutez vos tâches avec leur durée et leurs liens de précédence
-                </p>
-              </span>
-            </li>
-            <li>
-              <span>
-                <strong>Calculer le MPM</strong>
-                <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', margin: '0' }}>
-                  Cliquez sur "Calculer le MPM" pour lancer l'algorithme de calcul
-                </p>
-              </span>
-            </li>
-            <li>
-              <span>
-                <strong>Analyser les résultats</strong>
-                <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', margin: '0' }}>
-                  Consultez les statistiques, les tableaux, les graphiques et les chemins critiques
-                </p>
-              </span>
-            </li>
-            <li>
-              <span>
-                <strong>Exporter ou Enregistrer</strong>
-                <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', margin: '0' }}>
-                  Téléchargez les résultats ou retrouvez-les dans l'historique à tout moment
-                </p>
-              </span>
-            </li>
-          </ol>
-        </div>
-
-        <div className="section">
-          <div className="section-title">Pourquoi utiliser la méthode MPM ?</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginTop: '20px' }}>
-            <div style={{ padding: '16px', background: 'var(--color-success-light)', borderRadius: 'var(--radius-lg)', borderLeft: '4px solid var(--color-success)' }}>
-              <strong style={{ color: 'var(--color-success)' }}>Identifier les tâches critiques</strong>
-              <p style={{ fontSize: '13px', marginTop: '8px', margin: '0' }}>
-                Découvrez quelles tâches impactent directement les délais de votre projet
+          <div className="advantage-list">
+            <div className="advantage success">
+              <h4>Identifier les tâches critiques</h4>
+              <p>
+                Visualisez immédiatement les tâches qui influencent la durée
+                totale du projet.
               </p>
             </div>
-            <div style={{ padding: '16px', background: 'var(--color-info-light)', borderRadius: 'var(--radius-lg)', borderLeft: '4px solid var(--color-info)' }}>
-              <strong style={{ color: 'var(--color-info)' }}>Optimiser la planification</strong>
-              <p style={{ fontSize: '13px', marginTop: '8px', margin: '0' }}>
-                Calculez les temps de marge pour planifier vos ressources plus efficacement
+
+            <div className="advantage info">
+              <h4>Optimiser les ressources</h4>
+              <p>
+                Utilisez les marges pour améliorer votre planification.
               </p>
             </div>
-            <div style={{ padding: '16px', background: 'var(--color-warning-light)', borderRadius: 'var(--radius-lg)', borderLeft: '4px solid var(--color-warning)' }}>
-              <strong style={{ color: 'var(--color-warning-dark)' }}>Gérer les risques</strong>
-              <p style={{ fontSize: '13px', marginTop: '8px', margin: '0' }}>
-                Anticipez les risques du projet et gérez les marges de sécurité efficacement
+
+            <div className="advantage warning">
+              <h4>Réduire les risques</h4>
+              <p>
+                Anticipez les retards grâce à une meilleure visibilité.
               </p>
             </div>
           </div>
-        </div>
+        </section>
+      </div>
 
-        <div className="help-section">
-          <strong>Besoin d'aide ?</strong>
-          <p style={{ fontSize: '14px', margin: '8px 0 0 0' }}>
-            Consultez la page d'Aide pour obtenir une documentation détaillée sur les formats de saisie, 
-            les contrôles du graphique et les règles de validation.
+      <div className="help-card">
+        <i className="ti ti-help-circle"></i>
+
+        <div>
+          <h3>Besoin d'aide ?</h3>
+          <p>
+            Consultez la documentation pour découvrir toutes les
+            fonctionnalités du calculateur MPM.
           </p>
         </div>
       </div>

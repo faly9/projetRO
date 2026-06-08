@@ -28,7 +28,7 @@ export default function App() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      <main style={{ flex: 1, overflowY: 'auto', minWidth: 0, width: '100%' }}>
+      <main style={{ flex: 1, overflowY: 'auto', minWidth: 0 }}>
         {renderPage()}
       </main>
     </div>

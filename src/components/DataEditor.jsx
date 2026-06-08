@@ -20,7 +20,17 @@ export default function DataEditor({ tasks, onTasksChange }) {
 
   return (
     <div style={{ overflowX: 'auto' }}>
-      <table>
+      <style>{`
+        .no-hover-editor tbody tr:hover,
+        .no-hover-editor tbody tr:hover td {
+          background-color: white !important;
+          cursor: default;
+        }
+        .no-hover-editor {
+          background: white;
+        }
+      `}</style>
+      <table className="no-hover-editor" style={{ background: 'white' }}>
         <thead>
           <tr>
             <th style={{ width: '100px' }}>Tâche</th>
@@ -38,8 +48,8 @@ export default function DataEditor({ tasks, onTasksChange }) {
             </tr>
           ) : (
             tasks.map((task, idx) => (
-              <tr key={idx}>
-                <td>
+              <tr key={idx} style={{ background: 'white' }}>
+                <td style={{ background: 'white' }}>
                   <input
                     type="text"
                     value={task.Task}
@@ -48,7 +58,7 @@ export default function DataEditor({ tasks, onTasksChange }) {
                     style={{ width: '100%' }}
                   />
                 </td>
-                <td>
+                <td style={{ background: 'white' }}>
                   <input
                     type="number"
                     value={task.Duration}
@@ -57,7 +67,7 @@ export default function DataEditor({ tasks, onTasksChange }) {
                     style={{ width: '100%' }}
                   />
                 </td>
-                <td>
+                <td style={{ background: 'white' }}>
                   <input
                     type="text"
                     value={task.Predecessors}
@@ -66,7 +76,7 @@ export default function DataEditor({ tasks, onTasksChange }) {
                     style={{ width: '100%' }}
                   />
                 </td>
-                <td>
+                <td style={{ background: 'white' }}>
                   <button
                     className="btn btn-danger btn-sm"
                     onClick={() => handleDeleteRow(idx)}

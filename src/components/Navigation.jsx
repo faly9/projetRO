@@ -1,179 +1,323 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-// On garde les identifiants techniques originaux en anglais pour ne pas casser le parent
 const pages = ['Home', 'MPM Calculator', 'History', 'Help']
 
-// On crée un dictionnaire de traduction pour l'affichage visuel uniquement
 const pageLabels = {
-  'Home': 'Accueil',
+  Home: 'Accueil',
   'MPM Calculator': 'Calculateur MPM',
-  'History': 'Historique',
-  'Help': 'Aide'
+  History: 'Historique',
+  Help: 'Aide',
 }
 
-export default function Navigation({ currentPage, setCurrentPage }) {
+const pageIcons = {
+  Home: 'ti-home',
+  'MPM Calculator': 'ti-chart-dots',
+  History: 'ti-history',
+  Help: 'ti-help-circle',
+}
+const styles = `
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap');
+
+:root{
+  --sidebar-width:260px;
+
+  --bg:#f5f7fb;
+  --surface:rgba(255,255,255,.95);
+  --text:#111827;
+  --muted:#6b7280;
+
+  --primary:#3b82f6;
+  --primary-dark:#4f46e5;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* SIDEBAR */
+.nav-sidebar{
+  position:fixed;
+  top:12px;
+  left:12px;
+  width:var(--sidebar-width);
+  height:calc(100vh - 24px);
+
+  display:flex;
+  flex-direction:column;
+
+  border-radius:24px;
+  backdrop-filter:blur(18px);
+  background:var(--surface);
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:0 10px 35px rgba(0,0,0,.08);
+
+  z-index:1000;
+  transition:.3s;
+}
+
+/* MOBILE */
+.nav-sidebar.mobile-closed{
+  transform:translateX(-120%);
+}
+
+.nav-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  z-index:999;
+}
+
+/* TOGGLE */
+.nav-toggle{
+  display:none;
+  position:fixed;
+  top:15px;
+  left:15px;
+
+  width:45px;
+  height:45px;
+
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  z-index:1001;
+
+  background:white;
+  box-shadow:0 8px 20px rgba(0,0,0,.1);
+}
+
+/* HEADER */
+.nav-header{
+  text-align:center;
+  padding: 0.5rem;
+}
+
+.nav-brand{
+  margin:0;
+  font-family:'DM Serif Display',serif;
+  font-size:28px;
+  color:var(--color-primary-hover);
+}
+
+.nav-brand em{
+  color:var(--color-primary-hover);
+}
+
+.nav-subtitle{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* MENU */
+.nav-menu{
+  flex:1;
+  padding:1rem;
+  flex-direction:column;
+  gap:8px;
+}
+
+.nav-item{
+  border:none;
+  background:transparent;
+
+  gap:12px;
+
+  padding:14px 16px;
+  border-radius:14px;
+  width: 100%;
+  display:flex;
+  align-items:start;
+  justify-content: start;
+
+  cursor:pointer;
+  transition:.25s;
+
+  color:var(--text);
+  font-weight:500;
+}
+
+.nav-item:hover{
+  background:rgba(59,130,246,.08);
+  transform:translateX(4px);
+}
+
+.nav-item.active{
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:white;
+  font-weight:600;
+
+  transform:translateX(6px);
+  box-shadow:0 8px 20px rgba(59,130,246,.25);
+}
+
+/* ICON */
+.nav-item i{
+  font-size:20px;
+}
+
+/* FOOTER */
+.nav-footer{
+  padding:1rem;
+  text-align:center;
+  border-top:1px solid rgba(0,0,0,.06);
+}
+
+.nav-version{
+  margin:0;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+  .nav-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .nav-sidebar{
+    top:0;
+    left:0;
+    height:100vh;
+    border-radius:0 24px 24px 0;
+  }
+}
+`;
+
+export default function Navigation({
+  currentPage,
+  setCurrentPage,
+}) {
   const [open, setOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width:768px)')
+
+    const update = (e) => {
+      setIsMobile(e.matches)
+    }
+
+    update(mq)
+
+    mq.addEventListener('change', update)
+
+    return () =>
+      mq.removeEventListener('change', update)
+  }, [])
+
+  const navigate = (page) => {
+    setCurrentPage(page)
+
+    if (isMobile) {
+      setOpen(false)
+    }
+  }
 
   return (
     <>
-      {/* Overlay — clic extérieur pour fermer */}
-      {open && (
+      <style>{styles}</style>
+
+      {isMobile && open && (
         <div
+          className="nav-overlay"
           onClick={() => setOpen(false)}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0,0,0,0.25)',
-            zIndex: 100,
-          }}
         />
       )}
 
-      {/* Barre latérale coulissante */}
-      <nav
-        className="sidebar"
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          height: '100vh',
-          width: '220px',
-          zIndex: 101,
-          transform: open ? 'translateX(0)' : 'translateX(-100%)',
-          transition: 'transform 0.3s cubic-bezier(0.4,0,0.2,1)',
-          display: 'flex',
-          flexDirection: 'column',
-          boxShadow: open ? '4px 0 24px rgba(0,0,0,0.12)' : 'none',
-        }}
-      >
-        {/* Bouton fermer */}
+      {isMobile && (
         <button
-          onClick={() => setOpen(false)}
-          style={{
-            position: 'absolute',
-            top: '14px',
-            right: '14px',
-            width: '26px',
-            height: '26px',
-            borderRadius: '6px',
-            border: '1px solid var(--color-border)',
-            background: 'var(--color-bg-primary)',
-            cursor: 'pointer',
-            fontSize: '16px',
-            color: 'var(--color-text-secondary)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 0,
-            lineHeight: 1,
-          }}
-          title="Fermer le menu"
+          className="nav-toggle"
+          onClick={() => setOpen(!open)}
         >
-          ×
-        </button>
-
-        {/* Branding */}
-        <div style={{
-          marginBottom: '32px',
-          paddingBottom: '20px',
-          borderBottom: '2px solid var(--color-border)',
-          paddingRight: '40px',
-        }}>
-          <h2 style={{
-            fontSize: '22px',
-            fontWeight: '800',
-            margin: '0 0 8px 0',
-            background: 'linear-gradient(135deg, #2563eb, #1e40af)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
-            Calculateur MPM
-          </h2>
-          <p style={{
-            fontSize: '12px',
-            color: 'var(--color-text-tertiary)',
-            margin: 0,
-            fontWeight: '500',
-          }}>
-            Outil de planification de projet
-          </p>
-        </div>
-
-        {/* Éléments de navigation */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          {pages.map((page) => {
-            const isActive = currentPage === page
-            return (
-              <button
-                key={page}
-                className={isActive ? 'btn btn-primary' : 'btn'}
-                onClick={() => { 
-                  setCurrentPage(page) // Envoie toujours 'Home', 'History', etc. au parent
-                  setOpen(false) 
-                }}
-                style={{
-                  width: '100%',
-                  justifyContent: 'flex-start',
-                  padding: '11px 14px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  background: isActive
-                    ? 'linear-gradient(135deg, #2563eb, #1e40af)'
-                    : 'transparent',
-                  color: isActive ? 'white' : 'var(--color-text-primary)',
-                  border: isActive ? 'none' : '1px solid transparent',
-                  borderRadius: '7px',
-                  transition: 'all 0.2s ease',
-                  cursor: 'pointer',
-                }}
-              >
-                {/* TRADUCTION VISUELLE ICI : Affiche le label français */}
-                {pageLabels[page]} 
-              </button>
-            )
-          })}
-        </div>
-      </nav>
-
-      {/* Bouton de bascule */}
-      <button
-        onClick={() => setOpen(true)}
-        title="Ouvrir le menu"
-        style={{
-          position: 'fixed',
-          top: '20px',
-          left: '20px',
-          width: '36px',
-          height: '36px',
-          borderRadius: '8px',
-          border: '1px solid var(--color-border)',
-          background: 'var(--color-bg-secondary)',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          gap: '4px',
-          padding: '8px',
-          zIndex: 99,
-          transition: 'box-shadow 0.2s, background 0.2s',
-        }}
-      >
-        {[0, 1, 2].map((i) => (
-          <span
-            key={i}
-            style={{
-              display: 'block',
-              width: '16px',
-              height: '2px',
-              borderRadius: '2px',
-              background: 'var(--color-text-secondary)',
-            }}
+          <i
+            className={`ti ${
+              open ? 'ti-x' : 'ti-menu-2'
+            }`}
           />
-        ))}
-      </button>
+        </button>
+      )}
+
+      <nav
+        className={`nav-sidebar ${
+          isMobile && !open
+            ? 'mobile-closed'
+            : ''
+        }`}
+      >
+        <div className="nav-menu">
+          {pages.map((page) => (
+            <button
+              key={page}
+              className={`nav-item ${
+                currentPage === page
+                  ? 'active'
+                  : ''
+              }`}
+              onClick={() => navigate(page)}
+            >
+              <i
+                className={`ti ${pageIcons[page]}`}
+              />
+              {pageLabels[page]}
+            </button>
+          ))}
+        </div>
+
+<div className="nav-header">
+  <div className="logo-wrap">
+    <svg className="logo-svg" viewBox="0 0 220 60">
+      
+      {/* background shape */}
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#2563eb"/>
+          <stop offset="100%" stopColor="#4f46e5"/>
+        </linearGradient>
+
+        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#0ea5e9"/>
+          <stop offset="100%" stopColor="#6366f1"/>
+        </linearGradient>
+      </defs>
+
+      {/* icon node network */}
+      <circle cx="18" cy="30" r="5" fill="url(#g1)" />
+      <circle cx="38" cy="15" r="4" fill="url(#g2)" />
+      <circle cx="38" cy="45" r="4" fill="url(#g1)" />
+
+      <line x1="18" y1="30" x2="38" y2="15" stroke="#94a3b8" strokeWidth="1.5"/>
+      <line x1="18" y1="30" x2="38" y2="45" stroke="#94a3b8" strokeWidth="1.5"/>
+
+      {/* text MPM */}
+      <text x="60" y="36" fontSize="22" fontFamily="DM Serif Display" fill="url(#g1)">
+        MPM
+      </text>
+
+      {/* RO badge */}
+      <rect x="130" y="18" rx="10" ry="10" width="40" height="24" fill="url(#g2)"/>
+      <text x="140" y="35" fontSize="12" fontWeight="700" fill="#fff">
+        RO
+      </text>
+
+    </svg>
+  </div>
+
+</div>
+
+      </nav>
     </>
   )
 }

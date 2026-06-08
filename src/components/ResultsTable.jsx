@@ -3,7 +3,13 @@ import React from 'react'
 export default function ResultsTable({ data, criticalNodes, showHighlight }) {
   return (
     <div style={{ overflowX: 'auto' }}>
-      <table>
+      <style>{`
+        .no-hover-results tbody tr:hover td {
+          background-color: inherit !important;
+          cursor: default;
+        }
+      `}</style>
+      <table className="no-hover-results" style={{ background: 'white' }}>
         <thead>
           <tr>
             <th>Tâche</th>
@@ -20,15 +26,15 @@ export default function ResultsTable({ data, criticalNodes, showHighlight }) {
               <tr
                 key={idx}
                 style={{
-                  background: isHighlighted ? '#d1fae5' : 'transparent',
+                  background: isHighlighted ? '#d1fae5' : 'white',
                   fontWeight: isHighlighted ? '600' : 'normal',
                   color: isHighlighted ? '#14532d' : 'inherit',
                 }}
               >
-                <td className="font-mono">{row.Task}</td>
-                <td>{row.Duration}</td>
-                <td>{row.Early_Start}</td>
-                <td>{row.Late_Start}</td>
+                <td className="font-mono" style={{ color: 'black' }}>{row.Task}</td>
+                <td style={{ color: 'black' }}>{row.Duration}</td>
+                <td style={{ color: 'black' }}>{row.Early_Start}</td>
+                <td style={{ color: 'black' }}>{row.Late_Start}</td>
                 <td>
                   <span style={{
                     fontWeight: '600',
