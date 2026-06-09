@@ -77,7 +77,7 @@ export default function History() {
   const handleCancelModal = () => setConfirmModal({ isOpen: false, type: null, sid: null })
 
 const pageStyle = {
-  marginLeft: '284px',
+  marginLeft: '250px',
   padding: '32px',
   minHeight: '100vh',
   background: '#f5f7fb',

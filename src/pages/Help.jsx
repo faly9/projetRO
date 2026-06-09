@@ -2,12 +2,13 @@ import React from 'react'
 
 export default function Help() {
   const pageStyle = {
-    marginLeft: '284px',
+    marginLeft: '260px',
     padding: '32px',
     minHeight: '100vh',
     background: '#f5f7fb',
     width: 'calc(100vw - 284px)',
     boxSizing: 'border-box',
+    overflow: 'hidden'
   }
 
   const mobileFix = `
